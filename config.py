@@ -1,7 +1,7 @@
 import numpy as np
 import cv2
 
-VIDEO_PATH = 'video/video8.MP4'
+VIDEO_PATH = 'video/video7.MP4'
 AREA_THRESHOLD = 900
 PERIMETER_THRESHOLD = 200
 MARKER_SIZE_MM = 19

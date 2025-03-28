@@ -1,6 +1,8 @@
 from config import *
 from masks import skin_mask, red_square_mask
 from plotting import plot_measurements
+import cv2
+import numpy as np
 
 
 setup_window()
@@ -42,7 +44,6 @@ while True:
                     if cv2.pointPolygonTest(cnt, (cx, cy), False) >= 0:
                         red_centers.append((cx, cy))
                         cv2.circle(contour_frame, (cx, cy), 5, (0, 0, 255), -1)
-
                         if pixel_to_mm_ratio is None:
                             x, y, w, h = cv2.boundingRect(red_cnt)
                             pixel_to_mm_ratio = MARKER_SIZE_MM / w
@@ -75,7 +76,7 @@ while True:
         length_pixels = rightmost - leftmost
         length_mm = length_pixels * pixel_to_mm_ratio
 
-        # Обновляем текущую длину для этой метки
+        # Обновляем текущую длину
         current_lengths[index + 1] = length_mm
 
         # Рисуем линию
@@ -89,7 +90,7 @@ while True:
         text_x = rightmost + 10
         text_y = center[1] + text_size[1] // 2
 
-        # Фон для текста
+        # Фон для текста (для лучшей читаемости)
         cv2.rectangle(contour_frame,
                       (text_x - 2, text_y - text_size[1] - 2),
                       (text_x + text_size[0] + 2, text_y + 2),
@@ -102,8 +103,6 @@ while True:
         # Номер метки
         cv2.putText(contour_frame, str(index + 1), (center[0] - 10, center[1] - 10),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
-
-
 
     cv2.imshow('Contours', contour_frame)
     frame_count += 1
